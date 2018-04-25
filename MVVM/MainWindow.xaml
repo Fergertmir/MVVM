@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:MVVM"
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="MainWindow" Height="350" Width="725">
     <Window.Resources>
         <Style TargetType="TextBlock">
             <Setter Property="FontSize" Value="14" />
@@ -18,10 +18,12 @@
             <Setter Property="Width" Value="40" />
             <Setter Property="Margin" Value="5" />
         </Style>
+        <local:ApplicationViewModel x:Key="ApplicationViewModel"/>
     </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="0.8*" />
             <ColumnDefinition Width="0.8*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
@@ -29,7 +31,7 @@
             <RowDefinition Height="0.2*" />
         </Grid.RowDefinitions>
         
-        <ListBox Grid.Column="0" ItemsSource="{Binding Phones}"
+        <ListBox Grid.Column="0" DataContext="{StaticResource ApplicationViewModel}" ItemsSource="{Binding Phones}"
                  SelectedItem="{Binding SelectedPhone}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
@@ -55,16 +57,31 @@
                 </i:Interaction.Triggers>
             </Button>
         </StackPanel>
-        
 
-        <StackPanel Grid.Column="1" DataContext="{Binding SelectedPhone}">
+
+        <StackPanel Grid.Column="1" DataContext="{StaticResource ApplicationViewModel}">
             <TextBlock Text="Выбранный элемент"  />
             <TextBlock Text="Модель" />
-            <TextBox Text="{Binding Title, UpdateSourceTrigger=PropertyChanged}" />
+            <TextBox Text="{Binding SelectedPhone.Title, UpdateSourceTrigger=PropertyChanged}" />
             <TextBlock Text="Производитель" />
-            <TextBox Text="{Binding Company, UpdateSourceTrigger=PropertyChanged}" />
+            <TextBox Text="{Binding SelectedPhone.Company, UpdateSourceTrigger=PropertyChanged}" />
             <TextBlock Text="Цена" />
-            <TextBox Text="{Binding Price, UpdateSourceTrigger=PropertyChanged}" />
+            <TextBox Text="{Binding SelectedPhone.Price, UpdateSourceTrigger=PropertyChanged}" />
         </StackPanel>
+
+        <DataGrid Grid.Column="2" x:Name="phonesGrid" AutoGenerateColumns="False" HorizontalGridLinesBrush="DarkGray"
+                  RowBackground="LightGray" AlternatingRowBackground="White" DataContext="{StaticResource ApplicationViewModel}" ItemsSource="{Binding SelectedPhone._items}" > <!--SelectedItem=""-->
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="id" Binding="{ Binding Path=Id}" Width="30" />
+                <DataGridTextColumn Header="Text" Binding="{Binding Path=Text}" Width="120" />
+                <DataGridTemplateColumn Header="X" Width="*">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Content="Х" DataContext="{StaticResource ApplicationViewModel}"   Command="{Binding SelectedPhone.RemoveItemCommand}" CommandParameter="{Binding SelectedPhone}" /> <!-- Надо добавить _selectedItem-->
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
     </Grid>
 </Window>

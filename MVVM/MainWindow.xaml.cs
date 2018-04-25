@@ -24,7 +24,9 @@ namespace MVVM
         {
             InitializeComponent();
 
-            DataContext = new ApplicationViewModel();
+            //DataContext = new ApplicationViewModel();
+            //Window2 a = new Window2();
+            //a.Show();
         }
     }
 }

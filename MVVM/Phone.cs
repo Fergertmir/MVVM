@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -8,38 +9,59 @@ using System.Threading.Tasks;
 
 namespace MVVM
 {
-    public class Phone
+    public class Phone : INotifyPropertyChanged
     {
 
-        private string title;
-        private string company;
-        private int price;
+        private string _title;
+        private string _company;
+        private int _price;
+
+        public ObservableCollection<TaskItem> _items { get; set; }
+
 
         public string Title
         {
-            get { return title; }
+            get { return _title; }
             set
             {
-                title = value;
-                OnPropertyChanged("Title");
+                _title = value;
+                OnPropertyChanged(nameof(Title));
             }
         }
         public string Company
         {
-            get { return company; }
+            get { return _company; }
             set
             {
-                company = value;
-                OnPropertyChanged("Company");
+                _company = value;
+                OnPropertyChanged(nameof(Company));
             }
         }
         public int Price
         {
-            get { return price; }
+            get { return _price; }
             set
             {
-                price = value;
-                OnPropertyChanged("Price");
+                _price = value;
+                OnPropertyChanged(nameof(Price));
+            }
+        }
+
+        private RelayCommand removeItemCommand;
+        public RelayCommand RemoveItemCommand
+        {
+            get
+            {
+                return removeItemCommand ??
+                  (removeItemCommand = new RelayCommand(obj =>
+                  {
+                      TaskItem Item = obj as TaskItem;
+                      if (Item != null)
+                      {
+                          _items.Remove(Item);
+                      }
+                  },
+                 (obj) => _items.Count > 0));
             }
         }
 

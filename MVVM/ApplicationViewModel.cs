@@ -46,6 +46,24 @@ namespace MVVM
             }
         }
 
+        private RelayCommand removeItemCommand;
+        public RelayCommand RemoveItemCommand
+        {
+            get
+            {
+                return removeItemCommand ??
+                  (removeItemCommand = new RelayCommand(obj =>
+                  {
+                      TaskItem Item = obj as TaskItem;
+                      if (Item != null)
+                      {
+                          //Phones.Remove(phone);
+                      }
+                  },
+                 (obj) => Phones.Count > 0));
+            }
+        }
+
         private RelayCommand doubleCommand;
         public RelayCommand DoubleCommand
         {
@@ -86,10 +104,38 @@ namespace MVVM
         {
             Phones = new ObservableCollection<Phone>
             {
-                new Phone { Title="iPhone 7", Company="Apple", Price=56000 },
-                new Phone {Title="Galaxy S7 Edge", Company="Samsung", Price =60000 },
-                new Phone {Title="Elite x3", Company="HP", Price=56000 },
-                new Phone {Title="Mi5S", Company="Xiaomi", Price=35000 }
+                new Phone { Title="iPhone 7", Company="Apple", Price=56000,
+                    _items = new ObservableCollection<TaskItem>
+                    {
+                        new TaskItem { Id = 1, Text = "iPhone 7 Some text 1" },
+                        new TaskItem { Id = 2, Text = "iPhone 7 Some text 2" },
+                        new TaskItem { Id = 3, Text = "iPhone 7 Some text 3" },
+                        new TaskItem { Id = 4, Text = "iPhone 7 Some text 4" }
+                    } },
+                new Phone {Title="Galaxy S7 Edge", Company="Samsung", Price =60000,
+                    _items = new ObservableCollection<TaskItem>
+                    {
+                        new TaskItem { Id = 1, Text = "Galaxy S7 Edge Some text 1" },
+                        new TaskItem { Id = 2, Text = "Galaxy S7 Edge Some text 2" },
+                        new TaskItem { Id = 3, Text = "Galaxy S7 Edge Some text 3" },
+                        new TaskItem { Id = 4, Text = "Galaxy S7 Edge Some text 4" }
+                    } },
+                new Phone {Title="Elite x3", Company="HP", Price=56000,
+                    _items = new ObservableCollection<TaskItem>
+                    {
+                        new TaskItem { Id = 1, Text = "Elite x3 Some text 1" },
+                        new TaskItem { Id = 2, Text = "Elite x3 Some text 2" },
+                        new TaskItem { Id = 3, Text = "Elite x3 Some text 3" },
+                        new TaskItem { Id = 4, Text = "Elite x3 Some text 4" }
+                    }  },
+                new Phone {Title="Mi5S", Company="Xiaomi", Price=35000,
+                    _items = new ObservableCollection<TaskItem>
+                    {
+                        new TaskItem { Id = 1, Text = "Mi5S Some text 1" },
+                        new TaskItem { Id = 2, Text = "Mi5S Some text 2" },
+                        new TaskItem { Id = 3, Text = "Mi5S Some text 3" },
+                        new TaskItem { Id = 4, Text = "Mi5S Some text 4" }
+                    } }
             };
         }
 
